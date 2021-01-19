@@ -1,0 +1,8 @@
+{
+  "dividends": {
+    "columns": [ "secid", "isin", "registryclosedate", "value", "currencyid" ],
+    "data": [
+
+    ]
+  }
+}
