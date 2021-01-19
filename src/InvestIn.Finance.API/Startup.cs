@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Interceptors;
+using InvestIn.BackgroundTasks;
 using InvestIn.Finance.API.Mutations;
 using InvestIn.Finance.API.Queries;
 using InvestIn.Finance.API.Subscriptions;
@@ -33,7 +34,8 @@ namespace InvestIn.Finance.API
             services.AddCors();
             services.AddInMemorySubscriptions();
             services.AddTimerServices();
-
+            services.AddBackgroundServices();
+            
             services.AddGraphQL(s => SchemaBuilder.New()
                 .AddServices(s)
                 .AddAuthorizeDirectiveType()

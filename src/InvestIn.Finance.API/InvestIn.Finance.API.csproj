@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\InvestIn.BackgroundTasks\InvestIn.BackgroundTasks.csproj" />
     <ProjectReference Include="..\InvestIn.Finance.Services\InvestIn.Finance.Services.csproj" />
     <ProjectReference Include="..\InvestIn.Infrastructure\InvestIn.Infrastructure.csproj" />
   </ItemGroup>
