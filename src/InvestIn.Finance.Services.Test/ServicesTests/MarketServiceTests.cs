@@ -179,7 +179,7 @@ namespace InvestIn.Finance.Services.Test.ServicesTests
         {
             var payments = _marketService.GetAllFuturePayments("1");
 
-            Assert.AreEqual(7, payments.Count);
+            Assert.AreEqual(6, payments.Count);
         }
 
         [Test]

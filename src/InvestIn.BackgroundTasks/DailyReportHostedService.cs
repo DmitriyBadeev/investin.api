@@ -57,9 +57,10 @@ namespace InvestIn.BackgroundTasks
                 await financeData.EfContext.SaveChangesAsync(token);
             }
         }
-
-        protected override string Schedule => "0 22 * * *";
-        protected override string DisplayName => "Statistic service";
+        
+        //MOSCOW TIME
+        protected override string Schedule => "0 21 * * *";
+        protected override string DisplayName => "Daily report service";
         
         //!DEBUG
         protected override bool IsExecuteOnServerRestart => false;

@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using InvestIn.Finance.Services.DTO;
+using InvestIn.Finance.Services.DTO.Graphs;
 using InvestIn.Finance.Services.Interfaces;
+using InvestIn.Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace InvestIn.Finance.Services.Services
 {
     public class GraphService : IGraphService
     {
         private readonly IStockMarketData _marketData;
+        private readonly FinanceDataService _financeDataService;
 
-        public GraphService(IStockMarketData marketData)
+        public GraphService(IStockMarketData marketData, FinanceDataService financeDataService)
         {
             _marketData = marketData;
+            _financeDataService = financeDataService;
         }
 
         public async Task<List<StockCandle>> StockCandles(string ticket, DateTime from, CandleInterval interval)
@@ -44,6 +49,30 @@ namespace InvestIn.Finance.Services.Services
             }
 
             return candles;
+        }
+
+        public List<TimeValue> PortfolioCostGraph(int portfolioId, string userId)
+        {
+            var reports = _financeDataService.EfContext.DailyPortfolioReports
+                .Include(r => r.Portfolio)
+                .Where(r => r.PortfolioId == portfolioId && r.Portfolio.UserId == userId);
+            
+            var graphData = new List<TimeValue>();
+            
+            foreach (var report in reports)
+            {
+                var cost = report.Cost;
+                var datestamp = report.Time.MillisecondsTimestamp();
+                
+                var dateValue = new TimeValue
+                {
+                    Value = cost, 
+                    Date = datestamp,
+                };
+                graphData.Add(dateValue);
+            }
+
+            return graphData;
         }
     }
 }

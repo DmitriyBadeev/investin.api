@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InvestIn.Finance.Services.DTO
+namespace InvestIn.Finance.Services.DTO.Graphs
 {
     public class StockCandle
     {
