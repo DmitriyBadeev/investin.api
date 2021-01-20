@@ -25,7 +25,7 @@ namespace InvestIn.Finance.Services.Services
             _assetsFactory = assetsFactory;
         }
 
-        public IEnumerable<InvestIn.Core.Entities.Finance.Portfolio> GetPortfolios(string userId)
+        public IEnumerable<Portfolio> GetPortfolios(string userId)
         {
             return _financeData.EfContext.Portfolios
                 .Include(p => p.PortfolioType)
@@ -62,7 +62,7 @@ namespace InvestIn.Finance.Services.Services
                 };
             }
             
-            var portfolio = new InvestIn.Core.Entities.Finance.Portfolio()
+            var portfolio = new Portfolio()
             {
                 Name = name,
                 UserId = userId,
@@ -110,15 +110,13 @@ namespace InvestIn.Finance.Services.Services
 
         public async Task<OperationResult<int>> GetPaperPrice(int portfolioId, string userId)
         {
-            var portfolio = await _financeData.EfContext.Portfolios.FindAsync(portfolioId);
+            var portfolioData = await GetPortfolioData(portfolioId);
             
-            var validationResult = CommonValidate<int>(portfolioId, userId, portfolio);
+            var validationResult = CommonValidate<int>(portfolioId, userId, portfolioData.PortfolioEntity);
             if (validationResult != null)
             {
                 return validationResult;
             }
-            
-            var portfolioData = GetPortfolioData(portfolioId);
 
             var sumPrice = 0;
             foreach (var asset in portfolioData.Assets)
@@ -131,22 +129,20 @@ namespace InvestIn.Finance.Services.Services
             return new OperationResult<int>()
             {
                 IsSuccess = true,
-                Message = $"Бумажная стоимость портфеля {portfolio.Name}",
+                Message = $"Бумажная стоимость портфеля {portfolioData.Name}",
                 Result = sumPrice
             };
         }
         
         public async Task<OperationResult<ValuePercent>> GetPaperProfit(int portfolioId, string userId)
         {
-            var portfolio = await _financeData.EfContext.Portfolios.FindAsync(portfolioId);
+            var portfolioData = await GetPortfolioData(portfolioId);
             
-            var validationResult = CommonValidate<ValuePercent>(portfolioId, userId, portfolio);
+            var validationResult = CommonValidate<ValuePercent>(portfolioId, userId, portfolioData.PortfolioEntity);
             if (validationResult != null)
             {
                 return validationResult;
             }
-
-            var portfolioData = GetPortfolioData(portfolioId);
 
             var sumProfit = 0;
             foreach (var asset in portfolioData.Assets)
@@ -162,7 +158,7 @@ namespace InvestIn.Finance.Services.Services
             return new OperationResult<ValuePercent>()
             {
                 IsSuccess = true,
-                Message = $"Бумажная прибыль портфеля {portfolio.Name}",
+                Message = $"Бумажная прибыль портфеля {portfolioData.Name}",
                 Result = new ValuePercent()
                 {
                     Value = sumProfit,
@@ -224,6 +220,33 @@ namespace InvestIn.Finance.Services.Services
             };
         }
 
+        public async Task<OperationResult<List<PaymentData>>> GetFuturePortfolioPayments(int portfolioId, string userId)
+        {
+            var portfolioData = await GetPortfolioData(portfolioId);
+
+            var validationResult = CommonValidate<List<PaymentData>>(portfolioId, userId, portfolioData.PortfolioEntity);
+            if (validationResult != null)
+            {
+                return validationResult;
+            }
+
+            var payments = new List<PaymentData>();
+            foreach (var assetInfo in portfolioData.Assets)
+            {
+                var futurePayments = assetInfo
+                    .GetFuturePayments();
+                
+                payments.AddRange(futurePayments);
+            }
+            
+            return new OperationResult<List<PaymentData>>()
+            {
+                IsSuccess = true,
+                Message = $"Будущие выплаты для портфеля {portfolioData.Name}",
+                Result = payments
+            };
+        }
+
         public async Task<OperationResult<ValuePercent>> GetPortfolioPaymentProfit(int portfolioId, string userId)
         {
             var result = await GetPortfolioPayments(portfolioId, userId);
@@ -259,7 +282,7 @@ namespace InvestIn.Finance.Services.Services
         
         public IEnumerable<StockInfo> GetStocks(int portfolioId, string userId)
         {
-            var portfolio = GetPortfolioData(portfolioId);
+            var portfolio = GetPortfolioData(portfolioId).GetAwaiter().GetResult();
 
             if (portfolio == null || portfolio.UserId != userId)
             {
@@ -277,7 +300,7 @@ namespace InvestIn.Finance.Services.Services
 
         public IEnumerable<FondInfo> GetFonds(int portfolioId, string userId)
         {
-            var portfolio = GetPortfolioData(portfolioId);
+            var portfolio = GetPortfolioData(portfolioId).GetAwaiter().GetResult();
 
             if (portfolio == null || portfolio.UserId != userId)
             {
@@ -295,7 +318,7 @@ namespace InvestIn.Finance.Services.Services
 
         public IEnumerable<BondInfo> GetBonds(int portfolioId, string userId)
         {
-            var portfolio = GetPortfolioData(portfolioId);
+            var portfolio = GetPortfolioData(portfolioId).GetAwaiter().GetResult();
 
             if (portfolio == null || portfolio.UserId != userId)
             {
@@ -311,21 +334,21 @@ namespace InvestIn.Finance.Services.Services
             }
         }
         
-        private PortfolioData GetPortfolioData(int portfolioId)
+        private async Task<PortfolioData> GetPortfolioData(int portfolioId)
         {
-            var userPortfolio = _financeData.EfContext.Portfolios
-                .Find(portfolioId);
+            var portfolio = await _financeData.EfContext.Portfolios.FindAsync(portfolioId);
 
-            if (userPortfolio == null)
+            if (portfolio == null)
             {
                 return null;
             }
             
             var portfolioData = new PortfolioData
             {
-                Id = userPortfolio.Id,
-                Name = userPortfolio.Name,
-                UserId = userPortfolio.UserId,
+                Id = portfolio.Id,
+                Name = portfolio.Name,
+                UserId = portfolio.UserId,
+                PortfolioEntity = portfolio,
                 Assets = _assetsFactory.Create(portfolioId)
             };
 
@@ -333,7 +356,7 @@ namespace InvestIn.Finance.Services.Services
         }
 
         private OperationResult CommonValidate(int portfolioId, string userId,
-            InvestIn.Core.Entities.Finance.Portfolio portfolio)
+            Portfolio portfolio)
         {
             var validationResult = CommonValidate<int>(portfolioId, userId, portfolio);
 
@@ -346,9 +369,9 @@ namespace InvestIn.Finance.Services.Services
                 IsSuccess = validationResult.IsSuccess
             };
         }
-        
+
         private OperationResult<TResult> CommonValidate<TResult>(int portfolioId, string userId, 
-            InvestIn.Core.Entities.Finance.Portfolio portfolio)
+            Portfolio portfolio)
         {
             if (portfolio == null)
             {

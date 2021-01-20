@@ -13,12 +13,14 @@ namespace InvestIn.Finance.Services.Interfaces
         
         Task<OperationResult> CreatePortfolio(string name, string userId, int typeId);
 
-        IEnumerable<InvestIn.Core.Entities.Finance.Portfolio> GetPortfolios(string userId);
+        IEnumerable<Portfolio> GetPortfolios(string userId);
 
         Task<OperationResult> AddPaymentInPortfolio(int portfolioId, string userId, string ticket, int amount,
             int paymentValue, DateTime date);
 
         Task<OperationResult<List<Payment>>> GetPortfolioPayments(int portfolioId, string userId);
+
+        Task<OperationResult<List<PaymentData>>> GetFuturePortfolioPayments(int portfolioId, string userId);
 
         Task<OperationResult<ValuePercent>> GetPortfolioPaymentProfit(int portfolioId, string userId);
 

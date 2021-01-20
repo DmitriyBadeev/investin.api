@@ -37,6 +37,9 @@ namespace InvestIn.Finance.Services.Test.ServicesTests
             TestHelpers.MockFondData(mockHttp);
             TestHelpers.MockBondData(mockHttp);
             
+            TestHelpers.MockCouponsData(mockHttp);
+            TestHelpers.MockDividendData(mockHttp);
+            
             TestHelpers.SeedOperations2(context);
         }
 
@@ -57,6 +60,28 @@ namespace InvestIn.Finance.Services.Test.ServicesTests
 
             Assert.IsTrue(result4.IsSuccess);
             Assert.AreEqual(1, result4.Result.Count);
+            
+            Assert.IsFalse(result2.IsSuccess, "Считается портфель чужого пользователя");
+            Assert.IsFalse(result5.IsSuccess, "Считается портфель чужого пользователя");
+        }
+
+        [Test]
+        public async Task AggregateFuturePayments()
+        {
+            var result1 = await _aggregatePortfolioService.AggregateFuturePayments(new[] {10, 11}, "1");
+            var result2 = await _aggregatePortfolioService.AggregateFuturePayments(new[] {10, 11, 12}, "1");
+            var result3 = await _aggregatePortfolioService.AggregateFuturePayments(new[] {10}, "1");
+            var result4 = await _aggregatePortfolioService.AggregateFuturePayments(new[] {12}, "2");
+            var result5 = await _aggregatePortfolioService.AggregateFuturePayments(new[] {12}, "1");
+            
+            Assert.IsTrue(result1.IsSuccess);
+            Assert.AreEqual(6, result1.Result.Count);
+            
+            Assert.IsTrue(result3.IsSuccess);
+            Assert.AreEqual(5, result3.Result.Count);
+
+            Assert.IsTrue(result4.IsSuccess);
+            Assert.AreEqual(0, result4.Result.Count);
             
             Assert.IsFalse(result2.IsSuccess, "Считается портфель чужого пользователя");
             Assert.IsFalse(result5.IsSuccess, "Считается портфель чужого пользователя");

@@ -44,6 +44,31 @@ namespace InvestIn.Finance.Services.Services
             };
         }
 
+        public async Task<OperationResult<List<PaymentData>>> AggregateFuturePayments(IEnumerable<int> portfolioIds, string userId)
+        {
+            var payments = new List<PaymentData>();
+            
+            var ids = portfolioIds.ToList();
+            foreach (var portfolioId in ids)
+            {
+                var result = await _portfolioService.GetFuturePortfolioPayments(portfolioId, userId);
+
+                if (!result.IsSuccess)
+                {
+                    return result;
+                }
+                
+                payments.AddRange(result.Result);
+            }
+            
+            return new OperationResult<List<PaymentData>>()
+            {
+                IsSuccess = true,
+                Message = $"Будущие выплаты для портфелей(я) c id={string.Join(", ", ids)}",
+                Result = payments
+            };
+        }
+
         public async Task<OperationResult<ValuePercent>> AggregatePaymentProfit(IEnumerable<int> portfolioIds, string userId)
         {
             var sumProfit = 0;

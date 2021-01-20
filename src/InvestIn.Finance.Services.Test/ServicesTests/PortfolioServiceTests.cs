@@ -37,6 +37,9 @@ namespace InvestIn.Finance.Services.Test.ServicesTests
             TestHelpers.MockStockData(mockHttp);
             TestHelpers.MockFondData(mockHttp);
             TestHelpers.MockBondData(mockHttp);
+
+            TestHelpers.MockCouponsData(mockHttp);
+            TestHelpers.MockDividendData(mockHttp);
             
             TestHelpers.SeedOperations2(context);
         }
@@ -130,6 +133,27 @@ namespace InvestIn.Finance.Services.Test.ServicesTests
             Assert.IsTrue(result1.IsSuccess, "Неуспешное выполнение операции");
             Assert.IsFalse(result2.IsSuccess, "Получение выплат у чужого пользователя");
             Assert.AreEqual(3, result1.Result.Count, "Неверное количество выплат");
+        }
+
+        [Test]
+        public async Task GetFuturePortfolioPayments()
+        {
+            var result1 = await _portfolioService.GetFuturePortfolioPayments(10, "1");
+            var result2 = await _portfolioService.GetFuturePortfolioPayments(11, "1");
+            var result3 = await _portfolioService.GetFuturePortfolioPayments(12, "2");
+            var result4 = await _portfolioService.GetFuturePortfolioPayments(12, "1");
+            
+            Assert.IsTrue(result1.IsSuccess, "Неуспешное выполнение операции");
+            Assert.AreEqual(5, result1.Result.Count, "Неверное количество выплат");
+            
+            Assert.IsTrue(result2.IsSuccess, "Неуспешное выполнение операции");
+            Assert.AreEqual(1, result2.Result.Count, "Неверное количество выплат");
+            
+            Assert.IsTrue(result3.IsSuccess, "Неуспешное выполнение операции");
+            Assert.AreEqual(0, result3.Result.Count, "Неверное количество выплат");
+            
+            Assert.IsFalse(result4.IsSuccess, "Получение выплат у чужого пользователя");
+            
         }
 
         [Test]

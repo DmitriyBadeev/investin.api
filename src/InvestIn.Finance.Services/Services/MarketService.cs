@@ -221,7 +221,7 @@ namespace InvestIn.Finance.Services.Services
         }
 
         private static bool CommonValidate(int price, int amount, AssetType assetType,
-            InvestIn.Core.Entities.Finance.Portfolio portfolio, out string message)
+            Portfolio portfolio, out string message)
         {
             if (assetType == null)
             {

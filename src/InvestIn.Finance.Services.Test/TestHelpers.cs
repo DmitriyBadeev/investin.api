@@ -45,21 +45,21 @@ namespace InvestIn.Finance.Services.Test
             var refillAction = context.CurrencyActions.FirstOrDefault(a => a.Name == SeedFinanceData.REFILL_ACTION);
             var withdrawalAction = context.CurrencyActions.FirstOrDefault(a => a.Name == SeedFinanceData.WITHDRAWAL_ACTION);
 
-            var portfolios = new List<InvestIn.Core.Entities.Finance.Portfolio>()
+            var portfolios = new List<Portfolio>()
             {
-                new InvestIn.Core.Entities.Finance.Portfolio()
+                new Portfolio()
                 {
                     Id = 1,
                     Name = "Сбербанк онлайн",
                     UserId = "1",
                 },
-                new InvestIn.Core.Entities.Finance.Portfolio()
+                new Portfolio()
                 {
                     Id = 2,
                     Name = "Тинькофф",
                     UserId = "1",
                 },
-                new InvestIn.Core.Entities.Finance.Portfolio()
+                new Portfolio()
                 {
                     Id = 3,
                     Name = "Другой пользователь",
@@ -335,9 +335,9 @@ namespace InvestIn.Finance.Services.Test
             var sberType = context.PortfolioTypes.FirstOrDefault(t => t.Name == SeedFinanceData.SBER_TYPE);
             var tinkoffType = context.PortfolioTypes.FirstOrDefault(t => t.Name == SeedFinanceData.TINKOFF_TYPE);
             
-            var portfolios = new List<InvestIn.Core.Entities.Finance.Portfolio>()
+            var portfolios = new List<Portfolio>()
             {
-                new InvestIn.Core.Entities.Finance.Portfolio()
+                new Portfolio()
                 {
                     Id = 10,
                     Name = "Тестовый портфель",
@@ -345,7 +345,7 @@ namespace InvestIn.Finance.Services.Test
                     PortfolioTypeId = sberType?.Id,
                     PortfolioType = sberType
                 },
-                new InvestIn.Core.Entities.Finance.Portfolio()
+                new Portfolio()
                 {
                     Id = 11,
                     Name = "Другой тестовый портфель",
@@ -353,7 +353,7 @@ namespace InvestIn.Finance.Services.Test
                     PortfolioTypeId = tinkoffType?.Id,
                     PortfolioType = tinkoffType
                 },
-                new InvestIn.Core.Entities.Finance.Portfolio()
+                new Portfolio()
                 {
                     Id = 12,
                     Name = "Тестовый портфель другого пользователя",

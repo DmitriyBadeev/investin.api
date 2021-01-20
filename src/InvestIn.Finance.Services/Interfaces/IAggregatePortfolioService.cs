@@ -10,6 +10,8 @@ namespace InvestIn.Finance.Services.Interfaces
     {
         Task<OperationResult<List<Payment>>> AggregatePayments(IEnumerable<int> portfolioIds, string userId);
 
+        Task<OperationResult<List<PaymentData>>> AggregateFuturePayments(IEnumerable<int> portfolioIds, string userId);
+
         Task<OperationResult<ValuePercent>> AggregatePaymentProfit(IEnumerable<int> portfolioIds, string userId);
 
         Task<OperationResult<ValuePercent>> AggregatePaperProfit(IEnumerable<int> portfolioIds, string userId);

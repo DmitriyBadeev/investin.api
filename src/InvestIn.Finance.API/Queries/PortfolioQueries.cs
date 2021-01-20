@@ -40,6 +40,14 @@ namespace InvestIn.Finance.API.Queries
         {
             return await aggregatePortfolioService.AggregatePayments(portfolioIds, userId);
         }
+
+        [Authorize]
+        public async Task<OperationResult<List<PaymentData>>> AggregateFuturePayments([CurrentUserIdGlobalState] string userId,
+            [Service] IAggregatePortfolioService aggregatePortfolioService, 
+            int[] portfolioIds)
+        {
+            return await aggregatePortfolioService.AggregateFuturePayments(portfolioIds, userId);
+        }
         
         [Authorize]
         public async Task<OperationResult<ValuePercent>> AggregatePortfolioPaymentProfit(

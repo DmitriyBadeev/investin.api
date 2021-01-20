@@ -143,61 +143,17 @@ namespace InvestIn.Finance.Services.Entities
             return _financeDataService.EfContext.Payments
                 .Where(p => p.Ticket == Ticket)
                 .ToList();
-            
-            // var paidPayments = new List<PaymentData>();
-            //
-            // foreach (var paymentData in PaymentsData)
-            // {
-            //     var assetInfoAtPaymentDay = GetAssetInfoAt(paymentData.RegistryCloseDate);
-            //
-            //     if (assetInfoAtPaymentDay != null && assetInfoAtPaymentDay.Amount > 0)
-            //     {
-            //         var payment = new PaymentData()
-            //         {
-            //             Name = GetName().Result,
-            //             Ticket = paymentData.Ticket,
-            //             Amount = assetInfoAtPaymentDay.Amount,
-            //             PaymentValue = paymentData.PaymentValue,
-            //             AllPayment = paymentData.PaymentValue * assetInfoAtPaymentDay.Amount,
-            //             RegistryCloseDate = paymentData.RegistryCloseDate,
-            //             CurrencyId = paymentData.CurrencyId,
-            //         };
-            //
-            //         paidPayments.Add(payment);
-            //     }
-            // }
-            //
-            // return paidPayments;
         }
 
         public List<PaymentData> GetFuturePayments()
         {
-            return PaymentsData.FindAll(d => DateTime.Compare(DateTime.Now, d.RegistryCloseDate) <= 0);
+            return PaymentsData.FindAll(d => d.RegistryCloseDate.IsFuture());
         }
 
         public int GetSumPayments()
         {
             return GetPaidPayments().Aggregate(0, (total, payment) => total + payment.PaymentValue);
         }
-
-        // private AssetInfo GetAssetInfoAt(DateTime date)
-        // {
-        //     if (DateTime.Compare(DateTime.Now, date) <= 0)
-        //     {
-        //         return null;
-        //     }
-        //
-        //     var assetInfo = new StockInfo(MarketData, _financeDataService, Ticket);
-        //
-        //     var operations = Operations.FindAll(o => DateTime.Compare(o.Date, date) <= 0);
-        //
-        //     foreach (var operation in operations)
-        //     {
-        //         assetInfo.RegisterOperation(operation);
-        //     }
-        //
-        //     return assetInfo;
-        // }
 
         public abstract List<PaymentData> PaymentsData { get; protected set; }
 
