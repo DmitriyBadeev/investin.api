@@ -12,5 +12,7 @@ namespace InvestIn.Finance.Services.Interfaces
         Task<List<StockCandle>> StockCandles(string ticket, DateTime from, CandleInterval interval);
 
         List<TimeValue> PortfolioCostGraph(int portfolioId, string userId);
+
+        Task<List<CostGraphData>> AggregatePortfolioCostGraph(IEnumerable<int> portfolioIds, string userId);
     }
 }

@@ -27,5 +27,12 @@ namespace InvestIn.Finance.API.Queries
         {
             return graphService.PortfolioCostGraph(portfolioId, userId);
         }
+
+        [Authorize]
+        public async Task<List<CostGraphData>> AggregatePortfolioCostGraph([Service] IGraphService graphService,
+            [CurrentUserIdGlobalState] string userId, int[] portfolioIds)
+        {
+            return await graphService.AggregatePortfolioCostGraph(portfolioIds, userId);
+        }
     }
 }

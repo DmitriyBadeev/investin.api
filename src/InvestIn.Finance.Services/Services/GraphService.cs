@@ -74,5 +74,31 @@ namespace InvestIn.Finance.Services.Services
 
             return graphData;
         }
+
+        public async Task<List<CostGraphData>> AggregatePortfolioCostGraph(IEnumerable<int> portfolioIds, string userId)
+        {
+            var data = new List<CostGraphData>();
+
+            foreach (var portfolioId in portfolioIds)
+            {
+                var portfolio = await _financeDataService.EfContext.Portfolios.FindAsync(portfolioId);
+
+                if (portfolio == null)
+                {
+                    continue;
+                }
+                
+                var portfolioGraphData = PortfolioCostGraph(portfolioId, userId);
+                
+                data.Add(new CostGraphData
+                {
+                    Data = portfolioGraphData,
+                    PortfolioId = portfolioId,
+                    PortfolioName = portfolio.Name
+                });
+            }
+
+            return data;
+        }
     }
 }

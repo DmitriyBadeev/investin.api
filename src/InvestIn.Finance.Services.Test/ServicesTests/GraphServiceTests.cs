@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using InvestIn.Core.Entities.Finance;
 using InvestIn.Core.Entities.Reports;
@@ -53,33 +54,83 @@ namespace InvestIn.Finance.Services.Test.ServicesTests
             Assert.AreEqual(2000, data[1].Value);
         }
 
+        [Test]
+        public async Task AggregatePortfolioCostGraph()
+        {
+            var data1 = await _graphService.AggregatePortfolioCostGraph(new []{1, 2}, "1");
+            var data2 = await _graphService.AggregatePortfolioCostGraph(new []{1}, "1");
+            var data3 = await _graphService.AggregatePortfolioCostGraph(new []{1, 2, 3}, "1");
+            var data4 = await _graphService.AggregatePortfolioCostGraph(new []{1, 99, 2}, "1");
+            
+            Assert.AreEqual(2, data1.Count);
+            Assert.AreEqual(1, data1[0].PortfolioId);
+            Assert.AreEqual(2, data1[1].PortfolioId);
+            Assert.AreEqual("TEST 1", data1[0].PortfolioName);
+            Assert.AreEqual("TEST 2", data1[1].PortfolioName);
+            
+            Assert.AreEqual(1, data2.Count);
+            Assert.AreEqual(3, data3.Count);
+            Assert.AreEqual(0, data3[2].Data.Count);
+            
+            Assert.AreEqual(2, data4.Count);
+        }
+
         private void MockData()
         {
             TestHelpers.MockCandles(_mockHttp);
 
-            _financeDataService.EfContext.Portfolios.Add(new Portfolio
+            _financeDataService.EfContext.Portfolios.AddRange(new List<Portfolio>
             {
-                Id = 1,
-                Name = "TEST",
-                UserId = "1",
+                new Portfolio
+                {
+                    Id = 1,
+                    Name = "TEST 1",
+                    UserId = "1",
+                },
+                new Portfolio
+                {
+                    Id = 2,
+                    Name = "TEST 2",
+                    UserId = "1"
+                },
+                new Portfolio
+                {
+                    Id = 3,
+                    Name = "TEST 2",
+                    UserId = "2"
+                },
             });
-            
-            _financeDataService.EfContext.DailyPortfolioReports.AddRange(new []
+
+            _financeDataService.EfContext.DailyPortfolioReports.AddRange(new DailyPortfolioReport
             {
-                new DailyPortfolioReport
-                {
-                    PortfolioId = 1,
-                    Cost = 1000,
-                    Profit = 100,
-                    Time = DateTime.Today,
-                },
-                new DailyPortfolioReport
-                {
-                    PortfolioId = 1,
-                    Cost = 2000,
-                    Profit = 200,
-                    Time = DateTime.Today.AddDays(1),
-                },
+                PortfolioId = 1,
+                Cost = 1000,
+                Profit = 100,
+                Time = DateTime.Today,
+            }, new DailyPortfolioReport
+            {
+                PortfolioId = 1,
+                Cost = 2000,
+                Profit = 200,
+                Time = DateTime.Today.AddDays(1),
+            }, new DailyPortfolioReport
+            {
+                PortfolioId = 2,
+                Cost = 1000,
+                Profit = 100,
+                Time = DateTime.Today,
+            }, new DailyPortfolioReport
+            {
+                PortfolioId = 2,
+                Cost = 1000,
+                Profit = 100,
+                Time = DateTime.Today.AddDays(1),
+            }, new DailyPortfolioReport
+            {
+                PortfolioId = 3,
+                Cost = 5000,
+                Profit = 500,
+                Time = DateTime.Today.AddDays(1),
             });
 
             _financeDataService.EfContext.SaveChanges();
