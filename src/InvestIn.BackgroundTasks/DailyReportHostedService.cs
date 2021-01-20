@@ -59,7 +59,7 @@ namespace InvestIn.BackgroundTasks
         }
         
         //MOSCOW TIME
-        protected override string Schedule => "0 21 * * *";
+        protected override string Schedule => "0 19 * * *";
         protected override string DisplayName => "Daily report service";
         
         //!DEBUG
