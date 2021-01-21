@@ -10,6 +10,6 @@ namespace InvestIn.Finance.Services.DTO.Graphs
         public double Low { get; set; }
         public double Value { get; set; }
         public double Volume { get; set; }
-        public DateTime DateTime { get; set; }
+        public long Date { get; set; }
     }
 }

@@ -17,10 +17,17 @@ namespace InvestIn.Finance.API.Queries
     public class PortfolioQueries
     {
         [Authorize]
-        public IEnumerable<InvestIn.Core.Entities.Finance.Portfolio> GetPortfolios([CurrentUserIdGlobalState] string userId, 
+        public IEnumerable<Portfolio> GetPortfolios(
+            [CurrentUserIdGlobalState] string userId, 
             [Service] IPortfolioService portfolioService)
         {
             return portfolioService.GetPortfolios(userId);
+        }
+        
+        [Authorize]
+        public IEnumerable<PortfolioType> GetPortfolioTypes([Service] IPortfolioService portfolioService)
+        {
+            return portfolioService.GetPortfolioTypes();
         }
 
         [Authorize]
@@ -31,7 +38,7 @@ namespace InvestIn.Finance.API.Queries
         {
             return await portfolioService.GetPortfolioPayments(portfolioId, userId);
         }
-        
+
         [Authorize]
         public async Task<OperationResult<List<Payment>>> AggregatePortfolioPayments(
             [CurrentUserIdGlobalState] string userId,

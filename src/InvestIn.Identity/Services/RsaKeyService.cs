@@ -91,7 +91,7 @@ namespace InvestIn.Identity.Services
         public RsaSecurityKey GetKey()
         {
             if (NeedsUpdate()) GenerateKeyAndSave();
-            var provider = new System.Security.Cryptography.RSACryptoServiceProvider();
+            var provider = new RSACryptoServiceProvider();
             provider.ImportParameters(GetKeyParameters());
             return new RsaSecurityKey(provider);
         }
@@ -127,14 +127,14 @@ namespace InvestIn.Identity.Services
             {
                 return new RSAParameters()
                 {
-                    D = this.D,
-                    DP = this.DP,
-                    DQ = this.DQ,
-                    Exponent = this.Exponent,
-                    InverseQ = this.InverseQ,
-                    Modulus = this.Modulus,
-                    P = this.P,
-                    Q = this.Q
+                    D = D,
+                    DP = DP,
+                    DQ = DQ,
+                    Exponent = Exponent,
+                    InverseQ = InverseQ,
+                    Modulus = Modulus,
+                    P = P,
+                    Q = Q
 
                 };
             }

@@ -6,7 +6,7 @@ namespace InvestIn.Infrastructure
 {
     public class FinanceDbContext : DbContext
     {
-        public DbSet<InvestIn.Core.Entities.Finance.Portfolio> Portfolios { get; set; }
+        public DbSet<Portfolio> Portfolios { get; set; }
         public DbSet<AssetOperation> AssetOperations { get; set; }
         public DbSet<AssetAction> AssetActions { get; set; }
         public DbSet<AssetType> AssetTypes { get; set; }

@@ -36,6 +36,7 @@ namespace InvestIn.Finance.Services.Services
 
             foreach (var candleData in data.candles.data)
             {
+                var date = DateTime.Parse(candleData[dateTimeIndex].GetString());
                 candles.Add(new StockCandle()
                 {
                     Open = candleData[openIndex].GetDouble(),
@@ -44,7 +45,7 @@ namespace InvestIn.Finance.Services.Services
                     Low = candleData[lowIndex].GetDouble(),
                     Value = candleData[valueIndex].GetDouble(),
                     Volume = candleData[volumeIndex].GetDouble(),
-                    DateTime = DateTime.Parse(candleData[dateTimeIndex].GetString()),
+                    Date = date.MillisecondsTimestamp(),
                 });
             }
 
