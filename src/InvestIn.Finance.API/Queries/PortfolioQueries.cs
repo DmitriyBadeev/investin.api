@@ -23,7 +23,7 @@ namespace InvestIn.Finance.API.Queries
         {
             return portfolioService.GetPortfolios(userId);
         }
-        
+
         [Authorize]
         public IEnumerable<PortfolioType> GetPortfolioTypes([Service] IPortfolioService portfolioService)
         {

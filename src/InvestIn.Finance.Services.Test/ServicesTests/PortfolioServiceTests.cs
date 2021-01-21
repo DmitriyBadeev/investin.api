@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using InvestIn.Finance.Services;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using InvestIn.Finance.Services.Services;
@@ -95,6 +94,22 @@ namespace InvestIn.Finance.Services.Test.ServicesTests
 
             var result3 = await _portfolioService.CreatePortfolio(name, "2", type2.Id);
             Assert.IsTrue(result3.IsSuccess);
+        }
+
+        [Test]
+        public async Task RemovePortfolio()
+        {
+            var result1 = await _portfolioService.RemovePortfolio(12, "1");
+            Assert.IsFalse(result1.IsSuccess);
+
+            var result2 = await _portfolioService.RemovePortfolio(12, "2");
+            Assert.IsTrue(result2.IsSuccess);
+            
+            var result3 = await _portfolioService.RemovePortfolio(99, "2");
+            Assert.IsFalse(result3.IsSuccess);
+            
+            var portfolios = _portfolioService.GetPortfolios("2");
+            Assert.AreEqual(0, portfolios.Count());
         }
 
         [Test]

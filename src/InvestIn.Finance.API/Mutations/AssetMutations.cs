@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using InvestIn.Finance.API.Mutations.InputTypes;
@@ -10,29 +11,31 @@ namespace InvestIn.Finance.API.Mutations
     [ExtendObjectType(Name = "Mutations")]
     public class AssetMutations
     {
-        private readonly IMarketService _marketService;
-
-        public AssetMutations(IMarketService marketService)
-        {
-            _marketService = marketService;
-        }
-
         [Authorize]
-        public async Task<OperationResult> BuyAsset(BuyAssetInput buyAssetInput)
+        public async Task<OperationResult> BuyAsset([Service] IMarketService marketService, BuyAssetInput buyAssetInput)
         {
-            var result = await _marketService.BuyAsset(buyAssetInput.PortfolioId, buyAssetInput.Ticket, buyAssetInput.Price,
+            var result = await marketService.BuyAsset(buyAssetInput.PortfolioId, buyAssetInput.Ticket, buyAssetInput.Price,
                 buyAssetInput.Amount, buyAssetInput.AssetTypeId, buyAssetInput.Date);
 
             return result;
         }
 
         [Authorize]
-        public async Task<OperationResult> SellAsset(SellAssetInput sellAssetInput)
+        public async Task<OperationResult> SellAsset([Service] IMarketService marketService, SellAssetInput sellAssetInput)
         {
-            var result = await _marketService.SellAsset(sellAssetInput.PortfolioId, sellAssetInput.Ticket, sellAssetInput.Price,
+            var result = await marketService.SellAsset(sellAssetInput.PortfolioId, sellAssetInput.Ticket, sellAssetInput.Price,
                 sellAssetInput.Amount, sellAssetInput.AssetTypeId, sellAssetInput.Date);
 
             return result;
+        }
+
+        [Authorize]
+        public async Task<OperationResult> RemovePortfolio(
+            [Service] IPortfolioService portfolioService,
+            [CurrentUserIdGlobalState] string userId, 
+            int portfolioId)
+        {
+            return await portfolioService.RemovePortfolio(portfolioId, userId);
         }
     }
 }

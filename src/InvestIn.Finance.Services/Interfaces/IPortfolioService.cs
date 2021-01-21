@@ -13,6 +13,8 @@ namespace InvestIn.Finance.Services.Interfaces
         
         Task<OperationResult> CreatePortfolio(string name, string userId, int typeId);
 
+        Task<OperationResult> RemovePortfolio(int portfolioId, string userId);
+
         IEnumerable<Portfolio> GetPortfolios(string userId);
 
         Task<OperationResult> AddPaymentInPortfolio(int portfolioId, string userId, string ticket, int amount,

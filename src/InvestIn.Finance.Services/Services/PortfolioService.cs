@@ -80,6 +80,26 @@ namespace InvestIn.Finance.Services.Services
             };
         }
 
+        public async Task<OperationResult> RemovePortfolio(int portfolioId, string userId)
+        {
+            var portfolio = await _financeData.EfContext.Portfolios.FindAsync(portfolioId);
+
+            var validationResult = CommonValidate(portfolioId, userId, portfolio);
+            if (validationResult != null)
+            {
+                return validationResult;
+            }
+
+            _financeData.EfContext.Portfolios.Remove(portfolio);
+            await _financeData.EfContext.SaveChangesAsync();
+            
+            return new OperationResult()
+            {
+                IsSuccess = true,
+                Message = $"Портфель {portfolio.Name} с id={portfolio.Id} удален успешно"
+            };
+        }
+
         public async Task<OperationResult<int>> GetCost(int portfolioId, string userId)
         {
             var portfolio = await _financeData.EfContext.Portfolios.FindAsync(portfolioId);
