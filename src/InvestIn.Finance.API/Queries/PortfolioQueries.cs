@@ -40,6 +40,14 @@ namespace InvestIn.Finance.API.Queries
         }
 
         [Authorize]
+        public IEnumerable<Payment> GetUserPayments(
+            [CurrentUserIdGlobalState] string userId,
+            [Service] IPortfolioService portfolioService)
+        {
+            return portfolioService.GetUserPayments(userId);
+        }
+
+        [Authorize]
         public async Task<OperationResult<List<Payment>>> AggregatePortfolioPayments(
             [CurrentUserIdGlobalState] string userId,
             [Service] IAggregatePortfolioService aggregatePortfolioService, 

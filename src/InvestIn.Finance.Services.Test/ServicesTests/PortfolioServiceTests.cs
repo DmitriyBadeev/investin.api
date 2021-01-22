@@ -151,6 +151,16 @@ namespace InvestIn.Finance.Services.Test.ServicesTests
         }
 
         [Test]
+        public void GetUserPayments()
+        {
+            var result1 = _portfolioService.GetUserPayments("1");
+            var result2 = _portfolioService.GetUserPayments("2");
+            
+            Assert.AreEqual(4, result1.Count());
+            Assert.AreEqual(1, result2.Count());
+        }
+
+        [Test]
         public async Task GetFuturePortfolioPayments()
         {
             var result1 = await _portfolioService.GetFuturePortfolioPayments(10, "1");

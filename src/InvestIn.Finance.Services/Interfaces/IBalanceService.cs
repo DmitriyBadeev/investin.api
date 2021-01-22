@@ -11,7 +11,7 @@ namespace InvestIn.Finance.Services.Interfaces
         Task<OperationResult<int>> AggregateBalance(IEnumerable<int> portfolioIds, string userId);
         Task<OperationResult<int>> GetBalance(int portfolioId, string userId);
 
-        IEnumerable<CurrencyOperation> GetAllCurrencyOperations(int portfolioId);
+        IEnumerable<CurrencyOperation> GetAllCurrencyOperations(string userId);
         
         Task<OperationResult> RefillBalance(int portfolioId, int price, DateTime date);
 

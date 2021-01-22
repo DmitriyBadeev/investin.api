@@ -218,6 +218,13 @@ namespace InvestIn.Finance.Services.Services
             };
         }
 
+        public IEnumerable<Payment> GetUserPayments(string userId)
+        {
+            return _financeData.EfContext.Payments
+                .Include(p => p.Portfolio)
+                .Where(p => p.Portfolio.UserId == userId);
+        }
+        
         public async Task<OperationResult<List<Payment>>> GetPortfolioPayments(int portfolioId, string userId)
         {
             var portfolio = await _financeData.EfContext.Portfolios.FindAsync(portfolioId);

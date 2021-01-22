@@ -138,10 +138,12 @@ namespace InvestIn.Finance.Services.Test.ServicesTests
         [Test]
         public void GetAllAssetOperations()
         {
-            var operations = _marketService.GetAllAssetOperations(1);
+            var operations1 = _marketService.GetAllAssetOperations("1");
+            var operations2 = _marketService.GetAllAssetOperations("2");
 
-            Assert.AreEqual(7, operations.Count());
-            Assert.AreEqual("YNDX", operations.FirstOrDefault().Ticket);
+            Assert.AreEqual(8, operations1.Count());
+            Assert.AreEqual(1, operations2.Count());
+            Assert.AreEqual("YNDX", operations1.FirstOrDefault().Ticket);
         }
 
         [Test]

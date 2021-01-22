@@ -22,6 +22,8 @@ namespace InvestIn.Finance.Services.Interfaces
 
         Task<OperationResult<List<Payment>>> GetPortfolioPayments(int portfolioId, string userId);
 
+        IEnumerable<Payment> GetUserPayments(string userId);
+
         Task<OperationResult<List<PaymentData>>> GetFuturePortfolioPayments(int portfolioId, string userId);
 
         Task<OperationResult<ValuePercent>> GetPortfolioPaymentProfit(int portfolioId, string userId);

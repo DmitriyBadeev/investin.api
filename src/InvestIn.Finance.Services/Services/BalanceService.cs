@@ -19,9 +19,12 @@ namespace InvestIn.Finance.Services.Services
             _financeDataService = financeDataService;
         }
 
-        public IEnumerable<CurrencyOperation> GetAllCurrencyOperations(int portfolioId)
+        public IEnumerable<CurrencyOperation> GetAllCurrencyOperations(string userId)
         {
-            return _financeDataService.EfContext.CurrencyOperations.Where(o => o.PortfolioId == portfolioId);
+            return _financeDataService.EfContext.CurrencyOperations
+                .Include(o => o.Portfolio)
+                .Where(o => o.Portfolio.UserId == userId)
+                .Include(o => o.CurrencyAction);
         }
 
         public int GetAggregateInvestSum(IEnumerable<int> portfolioIds, string userId)

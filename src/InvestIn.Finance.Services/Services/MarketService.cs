@@ -25,9 +25,13 @@ namespace InvestIn.Finance.Services.Services
             _balanceService = balanceService;
         }
 
-        public IEnumerable<AssetOperation> GetAllAssetOperations(int portfolioId)
+        public IEnumerable<AssetOperation> GetAllAssetOperations(string userId)
         {
-            return _financeDataService.EfContext.AssetOperations.Where(o => o.PortfolioId == portfolioId);
+            return _financeDataService.EfContext.AssetOperations
+                .Include(o => o.Portfolio)
+                .Include(o => o.AssetAction)
+                .Include(o => o.AssetType)
+                .Where(o => o.Portfolio.UserId == userId);
         }
 
         public async Task<OperationResult> BuyAsset(int portfolioId, string ticket, int price, int amount,

@@ -14,28 +14,16 @@ namespace InvestIn.Finance.API.Queries
     {
         [Authorize]
         public IEnumerable<AssetOperation> GetAllAssetOperations([CurrentUserIdGlobalState] string userId,
-            [Service] IMarketService marketService, [Service] IPortfolioService portfolioService, int portfolioId)
+            [Service] IMarketService marketService)
         {
-            var hasPortfolio = portfolioService.GetPortfolios(userId).Any(p => p.UserId == userId);
-            if (!hasPortfolio)
-            {
-                return new List<AssetOperation>();
-            }
-
-            return marketService.GetAllAssetOperations(portfolioId);
+            return marketService.GetAllAssetOperations(userId);
         }
 
         [Authorize]
         public IEnumerable<CurrencyOperation> GetAllCurrencyOperations([CurrentUserIdGlobalState] string userId,
-            [Service] IBalanceService balanceService, [Service] IPortfolioService portfolioService, int portfolioId)
+            [Service] IBalanceService balanceService)
         {
-            var hasPortfolio = portfolioService.GetPortfolios(userId).Any(p => p.UserId == userId);
-            if (!hasPortfolio)
-            {
-                return new List<CurrencyOperation>();
-            }
-
-            return balanceService.GetAllCurrencyOperations(portfolioId);
+            return balanceService.GetAllCurrencyOperations(userId);
         }
 
         [Authorize]

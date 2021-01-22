@@ -8,7 +8,7 @@ namespace InvestIn.Finance.Services.Interfaces
 {
     public interface IMarketService
     {
-        IEnumerable<AssetOperation> GetAllAssetOperations(int portfolioId);
+        IEnumerable<AssetOperation> GetAllAssetOperations(string userId);
         List<PaymentData> GetAllFuturePayments(string userId);
         Task<AssetPrices> GetAllAssetPrices(string userId);
         Task<OperationResult> BuyAsset(int portfolioId, string ticket, int price, int amount,

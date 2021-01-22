@@ -101,9 +101,11 @@ namespace InvestIn.Finance.Services.Test.ServicesTests
         [Test]
         public void GetAllCurrencyOperations()
         {
-            var result = _balanceService.GetAllCurrencyOperations(1);
+            var result1 = _balanceService.GetAllCurrencyOperations("1");
+            var result2 = _balanceService.GetAllCurrencyOperations("2");
            
-            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(3, result1.Count());
+            Assert.AreEqual(1, result2.Count());
         }
 
         [Test]
