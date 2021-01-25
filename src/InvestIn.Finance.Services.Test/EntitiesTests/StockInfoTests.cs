@@ -47,6 +47,7 @@ namespace InvestIn.Finance.Services.Test.EntitiesTests
             
             var context = TestHelpers.GetMockFinanceDbContext(); 
             _financeDataService = new FinanceDataService(context);
+            MockPortfolios();
         }
 
         [Test]
@@ -179,6 +180,28 @@ namespace InvestIn.Finance.Services.Test.EntitiesTests
             Assert.AreEqual(1870, stockSBERInfo.GetNearestPayment().PaymentValue);
             Assert.AreEqual(null, stockYNDXInfo.GetNearestPayment());
         }
+        
+        private void MockPortfolios()
+        {
+            _financeDataService.EfContext.Portfolios.AddRange(new Portfolio()
+            {
+                Id = 1,
+                Name = "TEST 1",
+                UserId = "1"
+            }, new Portfolio()
+            {
+                Id = 2,
+                Name = "TEST 2",
+                UserId = "1"
+            }, new Portfolio()
+            {
+                Id = 3,
+                Name = "TEST 3",
+                UserId = "2"
+            });
+
+            _financeDataService.EfContext.SaveChanges();
+        }
 
         private AssetInfo GetYNDXStock()
         {
@@ -196,7 +219,8 @@ namespace InvestIn.Finance.Services.Test.EntitiesTests
                     AssetActionId = _buyAction.Id,
                     AssetType = _stockType,
                     AssetTypeId = _stockType.Id,
-                    Date = new DateTime(2019, 11, 18)
+                    Date = new DateTime(2019, 11, 18),
+                    PortfolioId = 1
                 },
                 new AssetOperation()
                 {
@@ -208,18 +232,50 @@ namespace InvestIn.Finance.Services.Test.EntitiesTests
                     AssetActionId = _sellAction.Id,
                     AssetType = _stockType,
                     AssetTypeId = _stockType.Id,
-                    Date = new DateTime(2020, 2, 4)
+                    Date = new DateTime(2020, 2, 4),
+                    PortfolioId = 1
+                },
+                new AssetOperation()
+                {
+                    Id = 2,
+                    Ticket = "YNDX",
+                    Amount = 1,
+                    PaymentPrice = 312430,
+                    AssetAction = _buyAction,
+                    AssetActionId = _buyAction.Id,
+                    AssetType = _stockType,
+                    AssetTypeId = _stockType.Id,
+                    Date = new DateTime(2020, 2, 4),
+                    PortfolioId = 2
+                },
+                new AssetOperation()
+                {
+                    Id = 2,
+                    Ticket = "YNDX",
+                    Amount = 1,
+                    PaymentPrice = 312430,
+                    AssetAction = _buyAction,
+                    AssetActionId = _buyAction.Id,
+                    AssetType = _stockType,
+                    AssetTypeId = _stockType.Id,
+                    Date = new DateTime(2020, 2, 4),
+                    PortfolioId = 3
                 },
             };
 
-            var stockInfo = new StockInfo(_stockMarketData, _financeDataService, "YNDX");
+            var stockInfo1 = new StockInfo(_stockMarketData, _financeDataService, "YNDX", 1);
+            var stockInfo2 = new StockInfo(_stockMarketData, _financeDataService, "YNDX", 2);
+            var stockInfo3 = new StockInfo(_stockMarketData, _financeDataService, "YNDX", 3);
 
             foreach (var assetOperation in operations)
             {
-                stockInfo.RegisterOperation(assetOperation);
+                stockInfo1.RegisterOperation(assetOperation);
+                stockInfo2.RegisterOperation(assetOperation);
+                stockInfo3.RegisterOperation(assetOperation);
             }
-            
-            return stockInfo;
+
+
+            return stockInfo1;
         }
 
         private AssetInfo GetSBERStock()
@@ -237,7 +293,7 @@ namespace InvestIn.Finance.Services.Test.EntitiesTests
                     PortfolioId = 1,
                     AssetType = _stockType,
                     AssetTypeId = _stockType.Id,
-                    Date = new DateTime(2018, 1, 4)
+                    Date = new DateTime(2018, 1, 4),
                 },
                 new AssetOperation()
                 {
@@ -251,7 +307,33 @@ namespace InvestIn.Finance.Services.Test.EntitiesTests
                     AssetType = _stockType,
                     AssetTypeId = _stockType.Id,
                     Date = new DateTime(2019, 4, 4)
-                }
+                },
+                new AssetOperation()
+                {
+                    Id = 3,
+                    Ticket = "SBER",
+                    Amount = 3,
+                    PaymentPrice = 1012430,
+                    AssetAction = _buyAction,
+                    AssetActionId = _buyAction.Id,
+                    PortfolioId = 2,
+                    AssetType = _stockType,
+                    AssetTypeId = _stockType.Id,
+                    Date = new DateTime(2018, 1, 4)
+                },
+                new AssetOperation()
+                {
+                    Id = 3,
+                    Ticket = "SBER",
+                    Amount = 3,
+                    PaymentPrice = 1012430,
+                    AssetAction = _buyAction,
+                    AssetActionId = _buyAction.Id,
+                    PortfolioId = 3,
+                    AssetType = _stockType,
+                    AssetTypeId = _stockType.Id,
+                    Date = new DateTime(2018, 1, 4)
+                },
             };
             
             var payments = new List<Payment>()
@@ -272,18 +354,38 @@ namespace InvestIn.Finance.Services.Test.EntitiesTests
                     Date = DateTime.Now,
                     PaymentValue = 6400
                 },
+                new Payment()
+                {
+                    PortfolioId = 2,
+                    Ticket = "SBER",
+                    Amount = 4,
+                    Date = DateTime.Now,
+                    PaymentValue = 6400
+                },
+                new Payment()
+                {
+                    PortfolioId = 3,
+                    Ticket = "SBER",
+                    Amount = 4,
+                    Date = DateTime.Now,
+                    PaymentValue = 6400
+                },
             };
             
             _financeDataService.EfContext.Payments.AddRange(payments);
             _financeDataService.EfContext.SaveChanges();
             
-            var stockInfo = new StockInfo(_stockMarketData, _financeDataService,"SBER");
+            var stockInfo1 = new StockInfo(_stockMarketData, _financeDataService,"SBER", 1);
+            var stockInfo2 = new StockInfo(_stockMarketData, _financeDataService,"SBER", 2);
+            var stockInfo3 = new StockInfo(_stockMarketData, _financeDataService,"SBER", 3);
             foreach (var assetOperation in operations)
             {
-                stockInfo.RegisterOperation(assetOperation);
+                stockInfo1.RegisterOperation(assetOperation);
+                stockInfo2.RegisterOperation(assetOperation);
+                stockInfo3.RegisterOperation(assetOperation);
             }
 
-            return stockInfo;
+            return stockInfo1;
         }
     }
 }

@@ -127,7 +127,33 @@ namespace InvestIn.Finance.Services.Test.EntitiesTests
                     AssetType = _bondType,
                     AssetTypeId = _bondType.Id,
                     Date = new DateTime(2020, 4, 4)
-                }
+                },
+                new AssetOperation()
+                {
+                    Id = 1,
+                    Ticket = "SU26209RMFS5",
+                    Amount = 2,
+                    PaymentPrice = 103180,
+                    PortfolioId = 2,
+                    AssetAction = _buyAction,
+                    AssetActionId = _buyAction.Id,
+                    AssetType = _bondType,
+                    AssetTypeId = _bondType.Id,
+                    Date = new DateTime(2020, 2, 7)
+                },
+                new AssetOperation()
+                {
+                    Id = 1,
+                    Ticket = "SU26209RMFS5",
+                    Amount = 2,
+                    PaymentPrice = 103180,
+                    PortfolioId = 3,
+                    AssetAction = _buyAction,
+                    AssetActionId = _buyAction.Id,
+                    AssetType = _bondType,
+                    AssetTypeId = _bondType.Id,
+                    Date = new DateTime(2020, 2, 7)
+                },
             };
             
             var payments = new List<Payment>()
@@ -140,17 +166,37 @@ namespace InvestIn.Finance.Services.Test.EntitiesTests
                     Date = DateTime.Now,
                     PaymentValue = 11370
                 },
+                new Payment()
+                {
+                    PortfolioId = 2,
+                    Ticket = "SU26209RMFS5",
+                    Amount = 3,
+                    Date = DateTime.Now,
+                    PaymentValue = 11370
+                },
+                new Payment()
+                {
+                    PortfolioId = 3,
+                    Ticket = "SU26209RMFS5",
+                    Amount = 3,
+                    Date = DateTime.Now,
+                    PaymentValue = 11370
+                },
             };
             _financeDataService.EfContext.Payments.AddRange(payments);
             _financeDataService.EfContext.SaveChanges();
             
-            var stockInfo = new BondInfo(_stockMarketData, _financeDataService, "SU26209RMFS5");
+            var stockInfo1 = new BondInfo(_stockMarketData, _financeDataService, "SU26209RMFS5", 1);
+            var stockInfo2 = new BondInfo(_stockMarketData, _financeDataService, "SU26209RMFS5", 2);
+            var stockInfo3 = new BondInfo(_stockMarketData, _financeDataService, "SU26209RMFS5", 3);
             foreach (var assetOperation in operations)
             {
-                stockInfo.RegisterOperation(assetOperation);
+                stockInfo1.RegisterOperation(assetOperation);
+                stockInfo2.RegisterOperation(assetOperation);
+                stockInfo3.RegisterOperation(assetOperation);
             }
 
-            return stockInfo;
+            return stockInfo1;
         }
 
         private AssetInfo GetAmortizedBond()
@@ -162,6 +208,32 @@ namespace InvestIn.Finance.Services.Test.EntitiesTests
                     Id = 1,
                     Ticket = "SU26210RMFS3",
                     PortfolioId = 1,
+                    Amount = 2,
+                    PaymentPrice = 101180,
+                    AssetAction = _buyAction,
+                    AssetActionId = _buyAction.Id,
+                    AssetType = _bondType,
+                    AssetTypeId = _bondType.Id,
+                    Date = new DateTime(2018, 2, 7)
+                },
+                new AssetOperation()
+                {
+                    Id = 1,
+                    Ticket = "SU26210RMFS3",
+                    PortfolioId = 2,
+                    Amount = 2,
+                    PaymentPrice = 101180,
+                    AssetAction = _buyAction,
+                    AssetActionId = _buyAction.Id,
+                    AssetType = _bondType,
+                    AssetTypeId = _bondType.Id,
+                    Date = new DateTime(2018, 2, 7)
+                },
+                new AssetOperation()
+                {
+                    Id = 1,
+                    Ticket = "SU26210RMFS3",
+                    PortfolioId = 3,
                     Amount = 2,
                     PaymentPrice = 101180,
                     AssetAction = _buyAction,
@@ -182,17 +254,37 @@ namespace InvestIn.Finance.Services.Test.EntitiesTests
                     Date = DateTime.Now,
                     PaymentValue = 227128
                 },
+                new Payment()
+                {
+                    PortfolioId = 2,
+                    Ticket = "SU26210RMFS3",
+                    Amount = 2,
+                    Date = DateTime.Now,
+                    PaymentValue = 227128
+                },
+                new Payment()
+                {
+                    PortfolioId = 3,
+                    Ticket = "SU26210RMFS3",
+                    Amount = 2,
+                    Date = DateTime.Now,
+                    PaymentValue = 227128
+                },
             };
             _financeDataService.EfContext.Payments.AddRange(payments);
             _financeDataService.EfContext.SaveChanges();
             
-            var stockInfo = new BondInfo(_stockMarketData, _financeDataService,"SU26210RMFS3");
+            var stockInfo1 = new BondInfo(_stockMarketData, _financeDataService,"SU26210RMFS3", 1);
+            var stockInfo2 = new BondInfo(_stockMarketData, _financeDataService,"SU26210RMFS3", 2);
+            var stockInfo3 = new BondInfo(_stockMarketData, _financeDataService,"SU26210RMFS3", 3);
             foreach (var assetOperation in operations)
             {
-                stockInfo.RegisterOperation(assetOperation);
+                stockInfo1.RegisterOperation(assetOperation);
+                stockInfo2.RegisterOperation(assetOperation);
+                stockInfo3.RegisterOperation(assetOperation);
             }
 
-            return stockInfo;
+            return stockInfo1;
         }
     }
 }

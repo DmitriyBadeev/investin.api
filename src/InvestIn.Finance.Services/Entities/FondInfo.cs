@@ -9,8 +9,9 @@ namespace InvestIn.Finance.Services.Entities
 {
     public class FondInfo : AssetInfo
     {
-        public FondInfo(IStockMarketData marketData, FinanceDataService financeDataService, string ticket) 
-            : base(marketData, financeDataService, ticket)
+        public FondInfo(IStockMarketData marketData, FinanceDataService financeDataService, string ticket,
+            int portfolioId) 
+            : base(marketData, financeDataService, ticket, portfolioId)
         {
             PaymentsData = new List<PaymentData>();
         }

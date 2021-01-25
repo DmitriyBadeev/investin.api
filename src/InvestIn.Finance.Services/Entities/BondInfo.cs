@@ -14,8 +14,9 @@ namespace InvestIn.Finance.Services.Entities
     {
         private List<PaymentData> _paymentsData;
 
-        public BondInfo(IStockMarketData marketData, FinanceDataService financeDataService, string ticket) 
-            : base(marketData, financeDataService, ticket)
+        public BondInfo(IStockMarketData marketData, FinanceDataService financeDataService, string ticket,
+            int portfolioId) 
+            : base(marketData, financeDataService, ticket, portfolioId)
         {
         }
 

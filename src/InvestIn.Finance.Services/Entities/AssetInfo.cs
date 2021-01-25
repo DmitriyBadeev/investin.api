@@ -19,9 +19,11 @@ namespace InvestIn.Finance.Services.Entities
         
         private readonly FinanceDataService _financeDataService;
 
-        protected AssetInfo(IStockMarketData marketData, FinanceDataService financeDataService, string ticket)
+        protected AssetInfo(IStockMarketData marketData, FinanceDataService financeDataService, string ticket,
+            int portfolioId)
         {
             Ticket = ticket;
+            PortfolioId = portfolioId;
             Amount = 0;
             BoughtPrice = 0;
             MarketData = marketData;
@@ -30,6 +32,7 @@ namespace InvestIn.Finance.Services.Entities
         }
 
         public string Ticket { get; }
+        public int PortfolioId { get; }
         public int Amount { get; private set; }
         public int BoughtPrice { get; private set; }
 
@@ -123,6 +126,11 @@ namespace InvestIn.Finance.Services.Entities
 
         public void RegisterOperation(AssetOperation operation)
         {
+            if (operation.PortfolioId != PortfolioId)
+            {
+                return;
+            }
+            
             if (operation.AssetAction.Name == SeedFinanceData.BUY_ACTION)
             {
                 Amount += operation.Amount;
@@ -141,7 +149,7 @@ namespace InvestIn.Finance.Services.Entities
         public List<Payment> GetPaidPayments()
         {
             return _financeDataService.EfContext.Payments
-                .Where(p => p.Ticket == Ticket)
+                .Where(p => p.Ticket == Ticket && p.PortfolioId == PortfolioId)
                 .ToList();
         }
 

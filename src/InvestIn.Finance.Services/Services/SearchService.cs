@@ -45,38 +45,41 @@ namespace InvestIn.Finance.Services.Services
             };
         }
 
-        public async Task<AssetData> GetAssetData(string ticket, string userId)
-        {
-            var searchData = await Search(ticket);
-
-            if (searchData == null)
-            {
-                return null;
-            }
-
-            if (AssetTypes.STOCK == searchData.Type)
-            {
-                var stockInfo = new StockInfo(_marketData, _financeData, ticket);
-                RegisterAllOperations(stockInfo, userId);
-                return await GetAssetData(stockInfo);
-            }
-
-            if (AssetTypes.ETF == searchData.Type)
-            {
-                var fondInfo = new FondInfo(_marketData, _financeData, ticket);
-                RegisterAllOperations(fondInfo, userId);
-                return await GetAssetData(fondInfo);
-            }
-
-            if (AssetTypes.OFZ == searchData.Type)
-            {
-                var bondInfo = new BondInfo(_marketData, _financeData, ticket);
-                RegisterAllOperations(bondInfo, userId);
-                return await GetAssetData(bondInfo);
-            }
-
-            return null;
-        }
+        // public async Task<AssetData> GetAssetData(string ticket, string userId)
+        // {
+        //     var searchData = await Search(ticket);
+        //
+        //     if (searchData == null)
+        //     {
+        //         return null;
+        //     }
+        //
+        //     if (AssetTypes.STOCK == searchData.Type)
+        //     {
+        //         //TODO portfolioId
+        //         var stockInfo = new StockInfo(_marketData, _financeData, ticket, 0);
+        //         RegisterAllOperations(stockInfo, userId);
+        //         return await GetAssetData(stockInfo);
+        //     }
+        //
+        //     if (AssetTypes.ETF == searchData.Type)
+        //     {
+        //         //TODO portfolioId
+        //         var fondInfo = new FondInfo(_marketData, _financeData, ticket, 0);
+        //         RegisterAllOperations(fondInfo, userId);
+        //         return await GetAssetData(fondInfo);
+        //     }
+        //
+        //     if (AssetTypes.OFZ == searchData.Type)
+        //     {
+        //         //TODO portfolioId
+        //         var bondInfo = new BondInfo(_marketData, _financeData, ticket, 0);
+        //         RegisterAllOperations(bondInfo, userId);
+        //         return await GetAssetData(bondInfo);
+        //     }
+        //
+        //     return null;
+        // }
 
         private async Task<AssetData> GetAssetData(AssetInfo assetInfo)
         {

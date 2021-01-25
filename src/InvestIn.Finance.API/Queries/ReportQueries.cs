@@ -68,12 +68,5 @@ namespace InvestIn.Finance.API.Queries
         {
             return await QueryGetters.SearchAsset(searchService, ticket);
         }
-
-        [Authorize]
-        public async Task<AssetData> AssetReport([CurrentUserIdGlobalState] string userId, 
-            [Service] ISearchService searchService, string ticket)
-        {
-            return  await QueryGetters.AssetReport(searchService, ticket, userId);
-        }
     }
 }

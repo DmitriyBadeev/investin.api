@@ -44,7 +44,8 @@ namespace InvestIn.Finance.Services.Services
 
                 if (asset == null)
                 {
-                    var stockInfo = new StockInfo(_marketData, _financeDataService, operation.Ticket);
+                    var stockInfo = new StockInfo(_marketData, _financeDataService, operation.Ticket, 
+                        operation.PortfolioId);
                     assets.Add(stockInfo);
                     asset = stockInfo;
                 }
@@ -58,7 +59,8 @@ namespace InvestIn.Finance.Services.Services
 
                 if (asset == null)
                 {
-                    var fondInfo = new FondInfo(_marketData, _financeDataService, operation.Ticket);
+                    var fondInfo = new FondInfo(_marketData, _financeDataService, operation.Ticket,
+                        operation.PortfolioId);
                     assets.Add(fondInfo);
                     asset = fondInfo;
                 }
@@ -72,7 +74,8 @@ namespace InvestIn.Finance.Services.Services
 
                 if (asset == null)
                 {
-                    var bondInfo = new BondInfo(_marketData, _financeDataService, operation.Ticket);
+                    var bondInfo = new BondInfo(_marketData, _financeDataService, operation.Ticket,
+                        operation.PortfolioId);
                     assets.Add(bondInfo);
                     asset = bondInfo;
                 }

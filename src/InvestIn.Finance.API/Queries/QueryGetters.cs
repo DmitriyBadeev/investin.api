@@ -193,11 +193,6 @@ namespace InvestIn.Finance.API.Queries
             return quotesService.GetMarketQuotes();
         }
 
-        public static async Task<AssetData> AssetReport(ISearchService searchService, string ticket, string userId)
-        {
-            return await searchService.GetAssetData(ticket, userId);
-        }
-
         public static async Task<SearchData> SearchAsset(ISearchService searchService, string ticket)
         {
             return await searchService.Search(ticket);
