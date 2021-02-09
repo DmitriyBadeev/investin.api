@@ -17,5 +17,7 @@ namespace InvestIn.Finance.Services.Interfaces
         Task<ApiResponse> FindCoupons(string codeBond, DateTime boughtDate);
         Task<ApiResponse> StockCandles(string code, DateTime from, CandleInterval interval);
         Task<ApiResponse> Search(string code);
+
+        // Task GetYahooStock();
     }
 }

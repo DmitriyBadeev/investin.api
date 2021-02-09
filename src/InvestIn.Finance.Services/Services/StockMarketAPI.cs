@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using InvestIn.Finance.Services.DTO.Responses;
 using InvestIn.Finance.Services.Interfaces;
+using YahooFinanceApi;
 
 namespace InvestIn.Finance.Services.Services
 {
@@ -77,6 +78,13 @@ namespace InvestIn.Finance.Services.Services
             var url = $"http://iss.moex.com/iss/engines/stock/markets/shares/securities/{code}/candles.json?from={dateString}&interval={(int)interval}&iss.meta=off";
             return await RequestTo(url);
         }
+        
+        // public async Task GetYahooStock()
+        // {
+        //     var securities = await Yahoo.Symbols("AAPL", "GOOG").Fields(Field.Symbol, Field.RegularMarketPrice, Field.FiftyTwoWeekHigh).QueryAsync();
+        //     var aapl = securities["AAPL"];
+        //     var price = aapl[Field.RegularMarketPrice];
+        // }
 
         private async Task<ApiResponse> RequestTo(string url)
         {

@@ -9,6 +9,7 @@ namespace InvestIn.BackgroundTasks
         public static IServiceCollection AddBackgroundServices(this IServiceCollection services)
         {
             services.AddHostedService<DailyReportHostedService>();
+            services.AddHostedService<RefreshHostedService>();
             return services;
         }
     }

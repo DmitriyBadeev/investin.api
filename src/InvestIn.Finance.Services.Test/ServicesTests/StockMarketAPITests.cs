@@ -36,5 +36,11 @@ namespace InvestIn.Finance.Services.Test.ServicesTests
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual(1, _mockHttp.GetMatchCount(request));
         }
+        
+        // [Test]
+        // public async Task GetYahooStock()
+        // {
+        //      await _stockMarketAPI.GetYahooStock();
+        // }
     }
 }

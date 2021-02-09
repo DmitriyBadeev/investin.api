@@ -18,6 +18,8 @@ namespace InvestIn.Infrastructure
         public DbSet<DailyPortfolioReport> DailyPortfolioReports { get; set; }
     
         public DbSet<Payment> Payments { get; set; }
+        
+        public DbSet<Asset> Assets { get; set; }
         public FinanceDbContext(DbContextOptions<FinanceDbContext> options) : base(options)
         {
         }

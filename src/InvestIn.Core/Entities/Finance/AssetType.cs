@@ -10,5 +10,7 @@ namespace InvestIn.Core.Entities.Finance
         public string Name { get; set; }
 
         public List<AssetOperation> AssetOperations { get; set; }
+        
+        public List<Asset> Assets { get; set; }
     }
 }

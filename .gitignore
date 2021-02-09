@@ -6,6 +6,7 @@ Logs/
 .config
 
 InvestIn.Frontend/
+InvestIn.Parser/
 
 *.swp
 *.*~
