@@ -22,11 +22,11 @@ namespace InvestIn.Core.Entities.Finance
 
         public int LotSize { get; set; }
 
-        public int IssueSize { get; set; }
+        public long IssueSize { get; set; }
 
         public double PrevClosePrice { get; set; }
 
-        public int Capitalization { get; set; }
+        public long Capitalization { get; set; }
 
         public string Description { get; set; }
 
