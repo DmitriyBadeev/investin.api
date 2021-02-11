@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using InvestIn.BackgroundTasks.Base;
@@ -28,7 +29,10 @@ namespace InvestIn.BackgroundTasks
             {
                 var financeData = scope.ServiceProvider.GetService<FinanceDataService>();
                 var stockMarketData = scope.ServiceProvider.GetService<IStockMarketData>();
-                var assets = financeData.EfContext.Assets.Include(a => a.AssetType);
+                var assets = financeData.EfContext.Assets
+                    .Include(a => a.AssetType)
+                    .ToList();
+                
                 foreach (var asset in assets)
                 {
                     if (asset.AssetType.Name == SeedFinanceData.STOCK_ASSET_TYPE)
@@ -36,6 +40,7 @@ namespace InvestIn.BackgroundTasks
                         var data = stockMarketData.GetStockData(asset.Ticket).GetAwaiter().GetResult();
                         var priceReport = stockMarketData.GetPrice(data);
 
+                        asset.Capitalization = (long)priceReport.Price * asset.IssueSize;
                         asset.Price = priceReport.Price;
                         asset.PriceChange = priceReport.Percent;
                         asset.UpdateTime = priceReport.Time;
@@ -72,6 +77,6 @@ namespace InvestIn.BackgroundTasks
         protected override string DisplayName => "Refresh process service";
         
         //!DEBUG
-        protected override bool IsExecuteOnServerRestart => true;
+        protected override bool IsExecuteOnServerRestart => false;
     }
 }

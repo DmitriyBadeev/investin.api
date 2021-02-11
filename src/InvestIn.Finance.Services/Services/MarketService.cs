@@ -192,7 +192,8 @@ namespace InvestIn.Finance.Services.Services
                 .Include(a => a.AssetType)
                 .Where(a => a.Price != 0)
                 .Where(a => a.AssetType.Name == type)
-                .Where(a => sectors.Contains(a.Sector));
+                .Where(a => sectors.Contains(a.Sector))
+                .OrderByDescending(a => a.Capitalization);
 
             return marketAssets;
         }
@@ -202,7 +203,8 @@ namespace InvestIn.Finance.Services.Services
             var marketAssets = _financeDataService.EfContext.Assets
                 .Include(a => a.AssetType)
                 .Where(a => a.Price != 0)
-                .Where(a => a.AssetType.Name == type);
+                .Where(a => a.AssetType.Name == type)
+                .OrderByDescending(a => a.Capitalization);
 
             return marketAssets;
         }
