@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using InvestIn.Finance.Services.DTO;
 using InvestIn.Finance.Services.DTO.Responses;
 using InvestIn.Finance.Services.Interfaces;
 
@@ -84,6 +85,36 @@ namespace InvestIn.Finance.Services.Services
             var response = await _stockMarketApi.StockCandles(code, from, interval);
 
             return GetData<StockCandleResponse>(response);
+        }
+
+        public PriceReport GetPrice(AssetResponse data)
+        {
+            var jsonPrice = FinanceHelpers.GetValueOfColumnMarketdata("LAST", data);
+            var jsonDecimals = FinanceHelpers.GetValueOfColumnSecurities("DECIMALS", data);
+            var jsonPriceChange = FinanceHelpers.GetValueOfColumnMarketdata("LASTTOPREVPRICE", data);
+            var jsonUpdateTime = FinanceHelpers.GetValueOfColumnMarketdata("TIME", data);
+
+            if (jsonPriceChange.ValueKind != JsonValueKind.Number || jsonPrice.ValueKind != JsonValueKind.Number)
+            {
+                return new PriceReport()
+                {
+                    Price = 0,
+                    Percent = 0,
+                    Time = ""
+                };
+            }
+            
+            var updateTime = jsonUpdateTime.GetString();
+            var price = jsonPrice.GetDouble();
+            var decimals = jsonDecimals.GetInt32();
+            var changePercent = jsonPriceChange.GetDouble();
+
+            return new PriceReport()
+            {
+                Price = Math.Round(price, decimals),
+                Percent = Math.Round(changePercent, 2),
+                Time = updateTime
+            };
         }
 
         private TResponse GetData<TResponse>(ApiResponse response) where TResponse : class

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using InvestIn.Finance.Services.DTO;
 using InvestIn.Finance.Services.DTO.Responses;
 using InvestIn.Finance.Services.Services;
 
@@ -17,5 +18,6 @@ namespace InvestIn.Finance.Services.Interfaces
         Task<AssetResponse> GetBrentData();
         Task<StockCandleResponse> GetStockCandleData(string code, DateTime from, CandleInterval interval);
         Task<SearchResponse> GetSearchData(string code);
+        PriceReport GetPrice(AssetResponse data);
     }
 }

@@ -31,5 +31,11 @@ namespace InvestIn.Core.Entities.Finance
         public string Description { get; set; }
 
         public string Sector { get; set; }
+        
+        public double Price { get; set; }
+
+        public double PriceChange { get; set; }
+        
+        public string UpdateTime { get; set; }
     }
 }

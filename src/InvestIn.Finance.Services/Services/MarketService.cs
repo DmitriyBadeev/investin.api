@@ -186,6 +186,27 @@ namespace InvestIn.Finance.Services.Services
             return assetPrices;
         }
 
+        public IEnumerable<Asset> GetMarketAssets(string type, string[] sectors)
+        {
+            var marketAssets = _financeDataService.EfContext.Assets
+                .Include(a => a.AssetType)
+                .Where(a => a.Price != 0)
+                .Where(a => a.AssetType.Name == type)
+                .Where(a => sectors.Contains(a.Sector));
+
+            return marketAssets;
+        }
+
+        public IEnumerable<Asset> GetMarketAssets(string type)
+        {
+            var marketAssets = _financeDataService.EfContext.Assets
+                .Include(a => a.AssetType)
+                .Where(a => a.Price != 0)
+                .Where(a => a.AssetType.Name == type);
+
+            return marketAssets;
+        }
+
         private bool HasAsset(int portfolioId, int amount, string ticket, string userId)
         {
             var portfolio = GetPortfoliosData(userId).Find(p => p.Id == portfolioId);

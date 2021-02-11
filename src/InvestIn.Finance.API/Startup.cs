@@ -45,6 +45,7 @@ namespace InvestIn.Finance.API
                 .AddType<BalanceQueries>()
                 .AddType<OperationQueries>()
                 .AddType<GraphQueries>()
+                .AddType<MarketQueries>()
                 .AddMutationType(d => d.Name("Mutations"))
                 .AddType<AssetMutations>()
                 .AddType<PortfolioMutations>()

@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using InvestIn.Core.Entities.Finance;
 using NUnit.Framework;
 using InvestIn.Finance.Services.Interfaces;
 using InvestIn.Finance.Services.Services;
@@ -21,7 +22,7 @@ namespace InvestIn.Finance.Services.Test.ServicesTests
         {
             _mockHttp = new MockHttpMessageHandler();
             var client = _mockHttp.ToHttpClient();
-
+            TestHelpers.MockStockData(_mockHttp);
             var stockMarketAPI = new StockMarketAPI(client);
             _stockMarketData = new StockMarketData(stockMarketAPI);
         }
@@ -126,10 +127,10 @@ namespace InvestIn.Finance.Services.Test.ServicesTests
         public async Task HandleErrorStock()
         {
             _mockHttp
-                .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/YNDX.json?iss.meta=off&iss.only=securities,marketdata")
+                .When(HttpMethod.Get, "http://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/TEST.json?iss.meta=off&iss.only=securities,marketdata")
                 .Respond(HttpStatusCode.BadGateway);
 
-            var response = await _stockMarketData.GetStockData("YNDX");
+            var response = await _stockMarketData.GetStockData("TEST");
 
             Assert.AreEqual(null, response);
         }
@@ -144,6 +145,17 @@ namespace InvestIn.Finance.Services.Test.ServicesTests
             var response = await _stockMarketData.GetDividendsData("YNDX");
 
             Assert.AreEqual(null, response);
+        }
+
+        [Test]
+        public async Task GetPrice()
+        {
+            var data = await _stockMarketData.GetStockData("SBER");
+
+            var result = _stockMarketData.GetPrice(data);
+            
+            Assert.AreEqual(226.58, result.Price);
+            Assert.AreEqual(-0.26, result.Percent);
         }
     }
 }

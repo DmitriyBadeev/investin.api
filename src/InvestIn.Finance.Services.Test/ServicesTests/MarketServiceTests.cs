@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using InvestIn.Core.Entities.Finance;
 using NUnit.Framework;
 using InvestIn.Finance.Services.Interfaces;
 using InvestIn.Finance.Services.Services;
@@ -190,6 +191,24 @@ namespace InvestIn.Finance.Services.Test.ServicesTests
             var payments = _marketService.GetAllFuturePayments("2");
 
             Assert.AreEqual(1, payments.Count);
+        }
+
+        [Test]
+        public void GetMarketAssets()
+        {
+            var stocks = _marketService.GetMarketAssets(SeedFinanceData.STOCK_ASSET_TYPE);
+            var fonds = _marketService.GetMarketAssets(SeedFinanceData.FOND_ASSET_TYPE);
+            var bonds = _marketService.GetMarketAssets(SeedFinanceData.BOND_ASSET_TYPE);
+
+            var financeStocks = _marketService.GetMarketAssets(
+                SeedFinanceData.STOCK_ASSET_TYPE, new[] {"Финансы"});
+            
+            Assert.AreEqual(2, stocks.Count());
+            Assert.AreEqual(1, fonds.Count());
+            Assert.AreEqual(1, bonds.Count());
+            
+            Assert.AreEqual(1, financeStocks.Count());
+            Assert.AreEqual("SBER", financeStocks.FirstOrDefault().Ticket);
         }
     }
 }

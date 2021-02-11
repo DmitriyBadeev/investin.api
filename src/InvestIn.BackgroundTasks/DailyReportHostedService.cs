@@ -22,9 +22,10 @@ namespace InvestIn.BackgroundTasks
 
         protected override async Task ProcessInScopeAsync(IServiceProvider serviceProvider, CancellationToken token)
         {
+            _logger.LogInformation("Starting write finance report for the day...");
+            
             using (var scope = serviceProvider.CreateScope())
             {
-                _logger.LogInformation("Starting write finance report for the day...");
                 var financeData = scope.ServiceProvider.GetService<FinanceDataService>();
                 var portfolioService = scope.ServiceProvider.GetService<IPortfolioService>();
 

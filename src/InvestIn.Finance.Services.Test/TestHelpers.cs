@@ -67,6 +67,50 @@ namespace InvestIn.Finance.Services.Test
                 }
             };
 
+            var assets = new List<Asset>()
+            {
+                new Asset()
+                {
+                    Ticket = "SBER",
+                    Sector = "Финансы",
+                    AssetType = stockType,
+                    AssetTypeId = stockType.Id,
+                    Price = 210.10,
+                    PriceChange = 1.24,
+                    UpdateTime = "15:21:43"
+                },
+                new Asset()
+                {
+                    Ticket = "YNDX",
+                    Sector = "Технологии",
+                    AssetType = stockType,
+                    AssetTypeId = stockType.Id,
+                    Price = 5101.02,
+                    PriceChange = 0.24,
+                    UpdateTime = "15:21:43"
+                },
+                new Asset()
+                {
+                    Ticket = "SU0",
+                    Sector = "",
+                    AssetType = bondType,
+                    AssetTypeId = bondType.Id,
+                    Price = 101.02,
+                    PriceChange = 0.14,
+                    UpdateTime = "15:21:43"
+                },
+                new Asset()
+                {
+                    Ticket = "FXGD",
+                    Sector = "",
+                    AssetType = fondType,
+                    AssetTypeId = fondType.Id,
+                    Price = 1150.52,
+                    PriceChange = 4.24,
+                    UpdateTime = "15:21:43"
+                }
+            };
+
             var operations = new List<AssetOperation>()
             {
                 //price = 434720
@@ -291,6 +335,7 @@ namespace InvestIn.Finance.Services.Test
             };
 
             context.Portfolios.AddRange(portfolios);
+            context.Assets.AddRange(assets);
             context.CurrencyOperations.AddRange(currencyOperations);
             context.AssetOperations.AddRange(operations);
             context.Payments.AddRange(payments);

@@ -15,5 +15,7 @@ namespace InvestIn.Finance.Services.Interfaces
             int assetTypeId, DateTime date);
         Task<OperationResult> SellAsset(int portfolioId, string ticket, int price, int amount,
             int assetTypeId, DateTime date);
+        IEnumerable<Asset> GetMarketAssets(string type, string[] sectors);
+        IEnumerable<Asset> GetMarketAssets(string type);
     }
 }
