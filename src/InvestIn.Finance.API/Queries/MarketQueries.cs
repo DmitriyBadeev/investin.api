@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using InvestIn.Core.Entities.Finance;
+using InvestIn.Finance.Services.DTO;
 using InvestIn.Finance.Services.Interfaces;
 
 namespace InvestIn.Finance.API.Queries
@@ -20,6 +22,12 @@ namespace InvestIn.Finance.API.Queries
         public IEnumerable<Asset> GetAssets([Service] IMarketService marketService, string type)
         {
             return marketService.GetMarketAssets(type);
+        }
+
+        [Authorize]
+        public async Task<OperationResult<Asset>> GetAsset([Service] IMarketService marketService, string ticket)
+        {
+            return await marketService.GetAssetInfo(ticket);
         }
     }
 }

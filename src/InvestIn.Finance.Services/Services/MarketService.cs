@@ -209,6 +209,30 @@ namespace InvestIn.Finance.Services.Services
             return marketAssets;
         }
 
+        public async Task<OperationResult<Asset>> GetAssetInfo(string ticket)
+        {
+            var asset = await _financeDataService.EfContext.Assets
+                .Include(a => a.AssetType)
+                .FirstOrDefaultAsync(a => a.Ticket == ticket);
+
+            if (asset == null)
+            {
+                return new OperationResult<Asset>()
+                {
+                    IsSuccess = false,
+                    Message = "Актив не найден",
+                    Result = null
+                };
+            }
+
+            return new OperationResult<Asset>()
+            {
+                IsSuccess = true,
+                Message = "Актив найден",
+                Result = asset 
+            };
+        }
+
         private bool HasAsset(int portfolioId, int amount, string ticket, string userId)
         {
             var portfolio = GetPortfoliosData(userId).Find(p => p.Id == portfolioId);

@@ -194,6 +194,21 @@ namespace InvestIn.Finance.Services.Test.ServicesTests
         }
 
         [Test]
+        public async Task GetAssetInfo()
+        {
+            var ticket = "SBER";
+
+            var assetSber = await _marketService.GetAssetInfo(ticket);
+            var assetNotFound = await _marketService.GetAssetInfo("WRONG_TICKET");
+            
+            Assert.IsTrue(assetSber.IsSuccess);
+            Assert.AreEqual(assetSber.Result.Ticket, ticket);
+            
+            Assert.IsFalse(assetNotFound.IsSuccess);
+            Assert.IsNull(assetNotFound.Result);
+        }
+
+        [Test]
         public void GetMarketAssets()
         {
             var stocks = _marketService.GetMarketAssets(SeedFinanceData.STOCK_ASSET_TYPE);
