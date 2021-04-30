@@ -31,7 +31,7 @@ namespace InvestIn.Identity
                     AllowAccessTokensViaBrowser = true,
                     RequireClientSecret = false,
                     AlwaysIncludeUserClaimsInIdToken = true,
-                    AccessTokenLifetime = 3600 * 5,
+                    AccessTokenLifetime = 3600 * 24 * 7 * 4,
                     RequireConsent = false,
                     AllowedCorsOrigins = 
                     { 
