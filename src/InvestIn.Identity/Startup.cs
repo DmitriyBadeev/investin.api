@@ -46,7 +46,7 @@ namespace InvestIn.Identity
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             
-            var rsa = new RsaKeyService(_environment, TimeSpan.FromDays(120));
+            var rsa = new RsaKeyService(_environment, TimeSpan.FromDays(1200));
             services.AddSingleton(provider => rsa);
             services.AddScoped<ISeedDataService, SeedService>();
             services.AddMvc();
