@@ -13,7 +13,8 @@ namespace InvestIn.Identity
         {
             return new List<ApiResource>
             {
-                new ApiResource(apiFinance)
+                new ApiResource(apiFinance),
+                new ApiResource("Sigma.Api")
             };
         }
 
@@ -50,6 +51,42 @@ namespace InvestIn.Identity
                         IdentityServerConstants.StandardScopes.OpenId, 
                         IdentityServerConstants.StandardScopes.Profile,
                         apiFinance
+                    }
+                },
+                new Client
+                {
+                    ClientId = "sigma_api",
+                    ClientName = "Sigma",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = true,
+                    AllowAccessTokensViaBrowser = true,
+                    RequireClientSecret = false,
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    AccessTokenLifetime = 3600 * 24 * 7 * 4,
+                    RequireConsent = false,
+                    AllowedCorsOrigins = 
+                    { 
+                        "http://localhost:3000", 
+                        "http://localhost:3001", 
+                        "https://sigma-frontend.herokuapp.com"
+                    },
+                    PostLogoutRedirectUris = new List<string> 
+                    {
+                        "https://sigma-frontend.herokuapp.com/signout",
+                        "http://localhost:3000/signout"
+                    },
+                    RedirectUris = new List<string>
+                    {
+                        "http://localhost:3000/auth-complete",
+                        "https://sigma-frontend.herokuapp.com/auth-complete",
+                        "http://localhost:3000/silent.html",
+                        "https://sigma-frontend.herokuapp.com/silent.html"
+                    },
+                    AllowedScopes = 
+                    { 
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "Sigma.Api"
                     }
                 }
             };

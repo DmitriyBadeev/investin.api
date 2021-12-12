@@ -64,6 +64,15 @@ namespace InvestIn.Identity.Services
             var financeRedirects = _configuration.GetSection("finance_redirect_uris").Get<List<string>>();
             var apiFinance = _configuration["apiFinance"];
             
+            if (!_configurationDbContext.ApiResources.Any())
+            {
+                foreach (var resource in Config.GetApiResources(apiFinance))
+                {
+                    _configurationDbContext.ApiResources.Add(resource.ToEntity());
+                }
+                _configurationDbContext.SaveChanges();
+            }
+            
             if (!_configurationDbContext.Clients.Any())
             {
                 foreach (var client in Config.GetSpaClient(financeClientId, financeRedirects, apiFinance))
@@ -81,16 +90,7 @@ namespace InvestIn.Identity.Services
                 }
                 _configurationDbContext.SaveChanges();
             }
-            
-            if (!_configurationDbContext.ApiResources.Any())
-            {
-                foreach (var resource in Config.GetApiResources(apiFinance))
-                {
-                    _configurationDbContext.ApiResources.Add(resource.ToEntity());
-                }
-                _configurationDbContext.SaveChanges();
-            }
-            
+
             var user = _userManager.FindByEmailAsync(email).GetAwaiter().GetResult();
             
             if (user == null)
