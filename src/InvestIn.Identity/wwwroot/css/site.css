@@ -35,7 +35,7 @@ button {
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(180deg, #8F61DB 50%, rgba(255, 255, 255, 0) 50%);
+    background: linear-gradient(180deg, #7F48DA 50%, rgba(255, 255, 255, 0) 50%);
 }
 
 .logo {
@@ -172,7 +172,7 @@ a {
 }
 
 .primary:hover {
-    background: #8458d2;
+    background: #6d28dc;
 }
 
 .default:hover {
@@ -185,9 +185,9 @@ a {
 }
 
 .primary {
-    background: #8F61DB;
+    background: #7F48DA;
     color: white;
-    border: solid 1px #8F61DB;
+    border: solid 1px #7F48DA;
     min-width: 180px;
 }
 

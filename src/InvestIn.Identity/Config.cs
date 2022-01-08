@@ -88,6 +88,23 @@ namespace InvestIn.Identity
                         IdentityServerConstants.StandardScopes.Profile,
                         "Sigma.Api"
                     }
+                },
+                new Client
+                {
+                    ClientId = "sigma_mobile",
+                    ClientName = "Sigma",
+                    AllowedGrantTypes = GrantTypes.DeviceFlow,
+                    RequirePkce = true,
+                    RequireClientSecret = false,
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    AccessTokenLifetime = 3600 * 24 * 7 * 4,
+                    RequireConsent = false,
+                    AllowedScopes = 
+                    { 
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "Sigma.Api"
+                    }
                 }
             };
         }
