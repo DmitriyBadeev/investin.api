@@ -92,19 +92,22 @@ namespace InvestIn.Identity
                 new Client
                 {
                     ClientId = "sigma_mobile",
-                    ClientName = "Sigma",
-                    AllowedGrantTypes = GrantTypes.DeviceFlow,
+                    ClientName = "Sigma Mobile",
+                    AllowedGrantTypes = GrantTypes.Code,
                     RequirePkce = true,
                     RequireClientSecret = false,
-                    AlwaysIncludeUserClaimsInIdToken = true,
                     AccessTokenLifetime = 3600 * 24 * 7 * 4,
                     RequireConsent = false,
-                    AllowedScopes = 
-                    { 
+                    RedirectUris = new List<string>
+                    {
+                        "https://com.verify",
+                    },
+                    AllowedScopes = { 
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "Sigma.Api"
-                    }
+                    },
+                    AllowOfflineAccess = true
                 }
             };
         }
